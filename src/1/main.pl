@@ -28,6 +28,31 @@ sub remove_duplicates {
 	grep !$seen{$_}++, @input;
 }
 
+sub first {
+	my (@left, @right) = @_;
+	my $total;
+	for my $i (0..$#left) {
+		$total += abs ($left[$i] - $right[$i]);
+	}
+	$total;
+}
+
+sub second {
+	my (@left, @right) = @_;
+	my %appears;
+
+	foreach my $i (@right) {
+		$appears{$i}++;
+	}
+
+	my $total;
+	foreach my $i (@left) {
+		$total += $i * ($appears{$i} // 0);
+	}
+
+	$total;
+}
+
 sub solve_for_files {
 	my @files = @_;
 	foreach(@files) {
@@ -38,12 +63,10 @@ sub solve_for_files {
 		my @right = sort { $a <=> $b } @$right_r;
 		print "[INFO] Sorted right list: @right\n";
 		
-		my $total;
-		for my $i (0..$#left) {
-			$total += abs ($left[$i] - $right[$i]);
-		}
-		
-		print "[Result] The result for $_ is $total\n";
+		my $first = &first(@left, @right);
+		print "[Result] The result for the first half as computed with the data from $_ is $first\n";
+		my $second = &second(@$left_r, @$right_r);
+		print "[Result] The result for the second half as computed with the data from $_ is $second\n";
 	}
 }
 
