@@ -43,7 +43,20 @@ sub solve_for_files {
 			$total += abs ($left[$i] - $right[$i]);
 		}
 		
-		print "[Result] The result for $_ is $total\n";
+	 	print "[Result] The result for the first task computed on file $_ is $total\n";
+
+		@left = @$left_r;
+		@right = @$right_r;
+		my %tmp;
+		foreach (@right) {
+			++$tmp{$_};
+		}
+
+		$total = 0;
+		foreach(@left) {
+			$total += $tmp{$_} * $_;
+		}
+	 	print "[Result] The result for the second task computed on file $_ is $total\n";
 	}
 }
 
