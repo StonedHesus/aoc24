@@ -22,12 +22,6 @@ sub read_input {
 	(\@left, \@right);
 };
 
-sub remove_duplicates {
-	my @input = @_;
-	my %seen;
-	grep !$seen{$_}++, @input;
-}
-
 sub solve_for_files {
 	my @files = @_;
 	foreach(@files) {
@@ -37,7 +31,7 @@ sub solve_for_files {
 		print "[INFO] Sorted left list: @left\n";
 		my @right = sort { $a <=> $b } @$right_r;
 		print "[INFO] Sorted right list: @right\n";
-		
+    
 		my $total;
 		for my $i (0..$#left) {
 			$total += abs ($left[$i] - $right[$i]);
