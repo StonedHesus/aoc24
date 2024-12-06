@@ -22,37 +22,6 @@ sub read_input {
 	(\@left, \@right);
 };
 
-sub remove_duplicates {
-	my @input = @_;
-	my %seen;
-	grep !$seen{$_}++, @input;
-}
-
-sub first {
-	my (@left, @right) = @_;
-	my $total;
-	for my $i (0..$#left) {
-		$total += abs ($left[$i] - $right[$i]);
-	}
-	$total;
-}
-
-sub second {
-	my (@left, @right) = @_;
-	my %appears;
-
-	foreach my $i (@right) {
-		$appears{$i}++;
-	}
-
-	my $total;
-	foreach my $i (@left) {
-		$total += $i * ($appears{$i} // 0);
-	}
-
-	$total;
-}
-
 sub solve_for_files {
 	my @files = @_;
 	foreach(@files) {
@@ -62,11 +31,26 @@ sub solve_for_files {
 		print "[INFO] Sorted left list: @left\n";
 		my @right = sort { $a <=> $b } @$right_r;
 		print "[INFO] Sorted right list: @right\n";
+    
+		my $total;
+		for my $i (0..$#left) {
+			$total += abs ($left[$i] - $right[$i]);
+		}
 		
-		my $first = &first(@left, @right);
-		print "[Result] The result for the first half as computed with the data from $_ is $first\n";
-		my $second = &second(@$left_r, @$right_r);
-		print "[Result] The result for the second half as computed with the data from $_ is $second\n";
+	 	print "[Result] The result for the first task computed on file $_ is $total\n";
+
+		@left = @$left_r;
+		@right = @$right_r;
+		my %tmp;
+		foreach (@right) {
+			++$tmp{$_};
+		}
+
+		$total = 0;
+		foreach(@left) {
+			$total += $tmp{$_} * $_;
+		}
+	 	print "[Result] The result for the second task computed on file $_ is $total\n";
 	}
 }
 
